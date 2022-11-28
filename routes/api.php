@@ -36,3 +36,8 @@ Route::post('/services/store', [ServiceController::class, 'store'])->name('servi
 Route::get('/customer/all', ['uses' => 'CustomerController@getCustomerAll', 'as' => 'customer.getcustomerall']);
 
 Route::post('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
+
+
+
+
+// Route::resource('customer', 'CustomerController');

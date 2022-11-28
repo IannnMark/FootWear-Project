@@ -85,7 +85,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customer = Customer::Find($id);
+        return response()->json($customer);
     }
 
     /**
@@ -97,7 +98,17 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $customer = Customer::find($id);
+
+      
+
+        $customer = $customer->update($request->all());
+
+       
+
+        $customer = Customer::find($id);
+
+        return response()->json($customer);
     }
 
     /**

@@ -1,6 +1,6 @@
 @include('layouts.master')
 <br>
-<div id="products" class="container">
+<div id="customers" class="container">
      {{-- <button type="button" class="btn btn-info btn-lg" data-bs-toggle="modal" data-bs-target="#productModal"  >add<span  class="glyphicon glyphicon-plus" aria-hidden="true"></span></button> --}}
   <div  class="table-responsive">
     <table id="ctable" class="table table-striped table-hover">
@@ -68,6 +68,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button id="customerSubmit" type="submit" class="btn btn-primary">Save</button>
+          <button id="customerUpdate" type="submit" class="btn btn-primary">Update</button>
         </div>
       </div>
   </div>

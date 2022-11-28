@@ -25,3 +25,4 @@ Route::get('product', [ProductController::class, 'index'])->name('product.index'
 Route::get('service', [ServiceController::class, 'index'])->name('service.index');
 
 Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
+// Route::resource('customer', 'CustomerController');
