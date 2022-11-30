@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,17 +28,51 @@ Route::get('products/all', [ProductController::class, 'getProduct'])->name('prod
 //post
 Route::post('/products/store', [ProductController::class, 'store'])->name('product.store');
 
+//edit
+Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
+Route::put('/products/{id}', [ProductController::class, 'update'])->name('product.update');
+
+//delete
+Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('product.delete');
+
 //service api 
 //get
 Route::get('services/all', [ServiceController::class, 'getService'])->name('service.all');
 //post
 Route::post('/services/store', [ServiceController::class, 'store'])->name('service.store');
 
-Route::get('/customer/all', ['uses' => 'CustomerController@getCustomerAll', 'as' => 'customer.getcustomerall']);
-
-Route::post('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
-
+//delete
+Route::delete('services/{id}', [ServiceController::class, 'destroy'])->name('service.delete');
 
 
+//customer
+//get
+Route::get('/customers/all', [CustomerController::class, 'getCustomerAll'])->name('customer.all');
+// Route::get('/customers/all', ['uses' => 'CustomerController@getCustomerAll', 'as' => 'customer.getcustomerall']);
+//post
+Route::post('/customers/store', [CustomerController::class, 'store'])->name('customer.store');
 
-// Route::resource('customer', 'CustomerController');
+
+//delete
+Route::delete('customers/{id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
+
+//edit
+Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
+Route::post('/customers/{id}', [CustomerController::class, 'update'])->name('customer.update');
+
+
+
+
+//employee
+//get
+Route::get('/employees/all', [EmployeeController::class, 'getEmployeeAll'])->name('employee.all');
+//post
+Route::post('/employees/store', [EmployeeController::class, 'store'])->name('employee.store');
+
+
+//delete
+Route::delete('employees/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
+
+//edit
+Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
+Route::post('/employees/{id}', [EmployeeController::class, 'update'])->name('employee.update');

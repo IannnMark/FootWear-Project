@@ -33,13 +33,14 @@ $(document).ready(function () {
 
             {data: null,
                 render: function (data, type, row) {
-                    return "<a href='#' class = 'editBtn' id='editbtn' data-id=" + data.id + "><i class='fa-solid fa-pen-to-square' aria-hidden='true' style='font-size:24px' ></i></a><a href='#' class='deletebtn' data-id=" + data.id + "><i class='fa-sharp fa-solid fa-trash' style='font-size:24px; color:red'></a></i>";
+                    return "<a href='#' class='editBtn' id='editbtn' data-id=" + data.id + "><i class='fa-solid fa-pen-to-square' aria-hidden='true' style='font-size:24px' ></i></a><a href='#' class='deletebtn' data-id=" + data.id + "><i class='fa-sharp fa-solid fa-trash' style='font-size:24px; color:red'></a></i>";
                 },
             },
         ],
         
     })
     
+    //post
     $("#productSubmit").on("click", function (e) {
         e.preventDefault();
         var data = $("#pform")[0];
@@ -75,115 +76,114 @@ $(document).ready(function () {
         })
     });
 
-    // $('#itable tbody').on('click', 'a.editBtn', function(e){
+    //edit
+    $('#ptable pbody').on('click', 'a.editBtn', function(e){
 
-    //     e.preventDefault();
-    //     var id = $(this).data('id');
-    //     $('#itemModal').modal('show');
-    //     // $('#editItemModal').modal('show');
+        e.preventDefault();
+        var id = $(this).data('id');
+        $('#productModal').modal('show');
 
-    //     $.ajax({
+        $.ajax({
+            type: "GET",
+            url: '/api/products/' + id + '/edit',
+            headers: {'X-CSRF-TOKEN': $('meta [name="csrf-token"]').attr('content') },
+            dataType:"json",
 
-    //         type: "GET",
-    //         url: '/api/items/' + id + '/edit',
-    //         headers: {'X-CSRF-TOKEN': $('meta [name="csrf-token"]').attr('content') },
-    //         dataType:"json",
+            success:function(data){
+                console.log(data);
 
-    //         success:function(data){
-    //             console.log(data);
+                $('#productId').val(data.id);
+                $('#brand').val(data.brand);
+                $('#description').val(data.description);
+                $('#cost_price').val(data.cost_price);
+                $('#sell_price').val(data.sell_price);
+                $('#imagePath').val(data.product_image);
+            },
 
-    //             $('#itemId').val(data.item_id);
-    //             $('#title').val(data.title);
-    //             $('#description').val(data.description);
-    //             $('#cost_price').val(data.cost_price);
-    //             $('#sell_price').val(data.sell_price);
-    //             $('#imagePath').val(data.imagePath);
-    //         },
+            error:function(error){
+                console.log(error);
+            },
+        });
+    });
 
-    //         error:function(error){
-    //             console.log(error);
-    //         },
-    //     });
-    // });
+//update
+    $('#productUpdate').on('click', function(e){
 
-
-    // $('#productUpdate').on('click', function(e){
-
-    //     e.preventDefault();
-    //     var id = $('#itemId').val();
-    //     console.log(id);
+        e.preventDefault();
+        var id = $('#productId').val();
+        console.log(id);
         
-    //     var table = $('#ptable').DataTable();
-    //     var cRow = $("tr td:eq("+ id + ")").closest('tr');
-    //     var data = $("#pform").serialize();
+        var table = $('#ptable').DataTable();
+        var cRow = $("tr td:eq("+ id + ")").closest('tr');
+        var data = $("#pform").serialize();
 
-    //     $.ajax({
+        $.ajax({
 
-    //         type: "PUT",
-    //         url: '/api/items/${id}',
-    //         data:data,
-    //         headers: {'X-CSRF-TOKEN': $('meta [name="csrf-token"]').attr('content')},
-    //         dataType: "json",
+            type: "PUT",
+            url: '/api/products/${id}',
+            data:data,
+            headers: {'X-CSRF-TOKEN': $('meta [name="csrf-token"]').attr('content')},
+            dataType: "json",
 
-    //         success: function(data){
-    //             console.log(data);
+            success: function(data){
+                console.log(data);
 
-    //             $('#itemModal').modal("hide");
-    //             table.row(cRow).data(data).invalidate().draw(false);
-    //             },
+                $('#productModal').modal("hide");
+                table.row(cRow).data(data).invalidate().draw(false);
+                },
 
-    //             error: function(error){
-    //                 alert('error');
-    //             }
-    //         });
+                error: function(error){
+                    alert('error');
+                }
+            });
 
-    // });
+    });
 
-    // $("#ibody").on("click", ".deletebtn", function (e) {
-    //     var id = $(this).data("id");
-    //     var $tr = $(this).closest("tr");
-    //     // var id = $(e.relatedTarget).attr('id');
-    //     console.log(id);
-    //     e.preventDefault();
-    //     bootbox.confirm({
-    //         message: "Do you want to delete this item",
-    //         buttons: {
-    //             confirm: {
-    //                 label: "Yes",
-    //                 className: "btn-success",
-    //             },
-    //             cancel: {
-    //                 label: "No",
-    //                 className: "btn-danger",
-    //             },
-    //         },
-    //         callback: function (result) {
-    //             if (result)
-    //                 $.ajax({
-    //                     type: "DELETE",
-    //                     url: "/api/item/" + id,
-    //                     headers: {
-    //                         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-    //                             "content"
-    //                         ),
-    //                     },
-    //                     dataType: "json",
-    //                     success: function (data) {
-    //                         console.log(data);
+    $("#pbody").on("click", ".deletebtn", function (e) {
+        var id = $(this).data("id");
+        var $tr = $(this).closest("tr");
+        // var id = $(e.relatedTarget).attr('id');
+        console.log(id);
+        e.preventDefault();
+        bootbox.confirm({
+            message: "Do you want to delete this product",
+            buttons: {
+                confirm: {
+                    label: "Yes",
+                    className: "btn-success",
+                },
+                cancel: {
+                    label: "No",
+                    className: "btn-danger",
+                },
+            },
+            callback: function (result) {
+                if (result)
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/products/" + id,
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
                             
-    //                         $tr.find("td").css('backgroundColor','hsl(0,100%,50%').fadeOut(2000, function () {
-    //                             $tr.remove();
-    //                         });
+                            $tr.find("td").css('backgroundColor','hsl(0,100%,50%').fadeOut(2000, function () {
+                                $tr.remove();
+                            });
                             
                             
-    //                     },
-    //                     error: function (error) {
-    //                         console.log(error);
-    //                     },
-    //                 });
-    //         },
-    //     });
-    // });
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+            },
+        });
+    });
 
 });
 

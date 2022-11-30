@@ -23,7 +23,7 @@ class CustomerController extends Controller
      public function getCustomerAll(Request $request)
     {
         //if ($request->ajax()){
-        $customers = Customer::orderBy('id')->get();
+        $customers = Customer::orderBy('id', 'ASC')->get();
         return response()->json($customers);
 
         // return view('customer.index');
@@ -59,7 +59,7 @@ class CustomerController extends Controller
 
         $files = $request->file('uploads');
 
-        $customer->customer_image = 'images/' . time() . '-' . $files->getClientOriginalName();
+        $customer->customer_image = 'images/'. $files->getClientOriginalName();
         $customer->save();
 
         Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
@@ -85,7 +85,7 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $customer = Customer::Find($id);
+        $customer = Customer::find($id);
         return response()->json($customer);
     }
 
@@ -98,17 +98,25 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // $customer = Customer::find($id);
+        // $customer = $customer->update($request->all());
         $customer = Customer::find($id);
 
-      
+        $customer->fname = $request->fname;
+        $customer->lname = $request->lname;
+        $customer->address = $request->address;
+        $customer->town = $request->town;
+        $customer->city = $request->city;
+        $customer->phone = $request->phone;
 
-        $customer = $customer->update($request->all());
+        $files = $request->file('uploads');
 
-       
+        $customer->customer_image = 'images/'. $files->getClientOriginalName();
+        // $customer->update();
+        $customer->save();
 
-        $customer = Customer::find($id);
-
-        return response()->json($customer);
+        Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
+        return response()->json(["success" => "Customer updated successfully.", "customer" => $customer, "status" => 200]);
     }
 
     /**
@@ -119,6 +127,9 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $customer = Customer::findOrFail($id);
+        $customer->delete();
+
+        return response()->json($customer);
     }
 }

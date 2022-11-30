@@ -1,7 +1,7 @@
 $(document).ready(function () {
-    $("#ctable").DataTable({
+    $("#etable").DataTable({
         ajax: {
-            url: "/api/customers/all",
+            url: "/api/employees/all",
             dataSrc: "",
         },
         dom: '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
@@ -15,11 +15,11 @@ $(document).ready(function () {
                 className: "btn btn-success glyphicon glyphicon-list-alt",
             },
              {
-                text: "Add Customer",
+                text: "Add Employee",
                 className: "btn btn-success",
                 action: function (e, dt, node, config) {
-                    $("#cform").trigger("reset");
-                    $("#customerModal").modal("show");
+                    $("#eform").trigger("reset");
+                    $("#employeeModal").modal("show");
                 },
             },
         
@@ -50,7 +50,7 @@ $(document).ready(function () {
             {
                 data: null,
                 render: function (data, type, JsonResultRow, row) {
-                    return `<img src= "storage/${data.customer_image}" "height="100px" width="100px">`;
+                    return `<img src= "storage/${data.employees_image}" "height="100px" width="100px">`;
                 },
             },
               {
@@ -64,9 +64,9 @@ $(document).ready(function () {
         ],
     });
 
-     $("#customerSubmit").on("click", function (e) {
+     $("#employeeSubmit").on("click", function (e) {
         e.preventDefault();
-        var data = $("#cform")[0];
+        var data = $("#eform")[0];
         console.log(data);
         let formData = new FormData(data);
         console.log(formData);
@@ -76,7 +76,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/api/customers/store",
+            url: "/api/employees/store",
             data: formData,
             contentType: false,
             processData: false,
@@ -86,9 +86,9 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                $("#customerModal").modal("hide");
-                var $ctable = $("#ctable").DataTable();
-                $ctable.row.add(data.customer).draw(false);
+                $("#employeeModal").modal("hide");
+                var $etable = $("#etable").DataTable();
+                $etable.row.add(data.employee).draw(false);
             },
             error: function (error) {
                 console.log(error);
@@ -97,14 +97,14 @@ $(document).ready(function () {
     });
     
     //delete
-    $("#cbody").on("click", ".deletebtn", function (e) {
+    $("#ebody").on("click", ".deletebtn", function (e) {
         var id = $(this).data("id");
         var $tr = $(this).closest("tr");
         // var id = $(e.relatedTarget).attr('id');
         console.log(id);
         e.preventDefault();
         bootbox.confirm({
-            message: "Do you want to delete this customer",
+            message: "Do you want to delete this employee",
             buttons: {
                 confirm: {
                     label: "Yes",
@@ -119,7 +119,7 @@ $(document).ready(function () {
                 if (result)
                     $.ajax({
                         type: "DELETE",
-                        url: "/api/customers/" + id,
+                        url: "/api/employees/" + id,
                         headers: {
                             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
                                 "content"
@@ -144,9 +144,9 @@ $(document).ready(function () {
     });
 
 
-    $("#ctable tbody").on("click", "a.editBtn", function (e) {
+    $("#etable tbody").on("click", "a.editBtn", function (e) {
         e.preventDefault();
-        $("#customerModal").modal("show");
+        $("#employeeModal").modal("show");
         var id = $(this).data("id");
 
         $.ajax({
@@ -155,14 +155,14 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             cache: false,
-            url: "/api/customers/" + id + "/edit",
+            url: "/api/employees/" + id + "/edit",
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                   $("#customer_id").val(data.id);
+                   $("#employee_id").val(data.id);
                    $("#fname").val(data.fname);
                    $("#lname").val(data.lname);
                    $("#address").val(data.address);
@@ -176,21 +176,21 @@ $(document).ready(function () {
         });
     });
 
-    $("#customerUpdate").on("click", function (e) {
+    $("#employeeUpdate").on("click", function (e) {
         e.preventDefault();
-        var id = $("#customer_id").val();
-        var data = $("#cform")[0];
+        var id = $("#employee_id").val();
+        var data = $("#eform")[0];
         let formData = new FormData(data);
         console.log(formData);
         for (var pair of formData.entries()) {
             console.log(pair[0] + "," + pair[1]);
         }
-        var table = $("#ctable").DataTable();
+        var table = $("#etable").DataTable();
         console.log(id);
 
         $.ajax({
             type: "POST",
-            url: "/api/customers/" + id,
+            url: "/api/employees/" + id,
             data: formData,
             contentType: false,
             processData: false,
@@ -200,7 +200,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                $("#customerModal").modal("hide");
+                $("#employeeModal").modal("hide");
                 table.ajax.reload();
             },
             error: function (error) {

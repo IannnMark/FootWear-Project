@@ -1,11 +1,11 @@
 @include('layouts.master')
 <br>
-<div id="customers" class="container">
+<div id="employees" class="container">
   <div  class="table-responsive">
-    <table id="ctable" class="table table-striped table-hover">
+    <table id="etable" class="table table-striped table-hover">
       <thead>
                 <tr>
-                    <th>Customer ID</th>
+                    <th>Employee ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Address</th>
@@ -16,14 +16,14 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-      <tbody id="cbody">
+      <tbody id="ebody">
       </tbody>
     </table>
   </div>
 </div>
 
 
-<div class="modal fade" id="customerModal" role="dialog" style="display:none">
+<div class="modal fade" id="employeeModal" role="dialog" style="display:none">
   <div class="modal-dialog modal-lg" >
       <div class="modal-content">
         <div class="modal-header">
@@ -31,11 +31,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
           <div class="modal-body">
-            <form id="cform" method="#" action="#" enctype="multipart/form-data">
+            <form id="eform" method="#" action="#" enctype="multipart/form-data">
 
-              <div class="form-group">
-                <input type="hidden" class="form-control" id="customer_id" name="id">
+               <div class="form-group">
+                <input type="hidden" class="form-control" id="employee_id" name="id">
               </div>
+
             <div class="form-group">
                         <label for="fname" class="control-label">First Name</label>
                         <input type="text" class="form-control" id="fname" name="fname">
@@ -69,8 +70,8 @@
           </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button id="customerSubmit" type="submit" class="btn btn-primary">Save</button>
-          <button id="customerUpdate" type="submit" class="btn btn-primary">Update</button>
+          <button id="employeeSubmit" type="submit" class="btn btn-primary">Save</button>
+          <button id="employeeUpdate" type="submit" class="btn btn-primary">Update</button>
         </div>
       </div>
   </div>
