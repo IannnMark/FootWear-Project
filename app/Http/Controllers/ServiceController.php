@@ -56,7 +56,7 @@ class ServiceController extends Controller
         $service->save();
 
         Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
-        return response()->json(["success" => "product created successfully.", "service" => $service, "status" => 200]);
+        return response()->json(["success" => "service created successfully.", "service" => $service, "status" => 200]);
     }
 
     /**
@@ -76,9 +76,10 @@ class ServiceController extends Controller
      * @param  \App\Models\Service  $service
      * @return \Illuminate\Http\Response
      */
-    public function edit(Service $service)
+    public function edit($id)
     {
-        //
+        $service = Service::find($id);
+        return response()->json($service);
     }
 
     /**
@@ -88,9 +89,25 @@ class ServiceController extends Controller
      * @param  \App\Models\Service  $service
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Service $service)
+    public function update(Request $request, $id)
     {
-        //
+        
+        $service = Service::find($id);
+        $input = $request->all();
+
+        // $service->brand = $request->brand;
+        $service->description = $request->description;
+        $service->cost_price = $request->cost_price;
+        $service->sell_price = $request->sell_price;
+
+        $files = $request->file('uploads');
+
+        $service->service_image = 'images/'.$files->getClientOriginalName();
+        Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
+        
+        // $product->update($input);
+        $service->save($input);
+        return response()->json(["success" => "service updated successfully.", "service" => $service, "status" => 200]);
     }
 
     /**
@@ -104,6 +121,7 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
         $service->delete();
 
-        return response()->json($service);
+        // return response()->json($service);
+        return response()->json(["success" => "Service deleted successfully.", "service" => $service, "status" => 200]);
     }
 }

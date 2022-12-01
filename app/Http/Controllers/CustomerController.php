@@ -14,13 +14,12 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  public function index()
+    public function index()
     {
         return View::make('customer.index');
-    
     }
 
-     public function getCustomerAll(Request $request)
+    public function getCustomerAll(Request $request)
     {
         //if ($request->ajax()){
         $customers = Customer::orderBy('id', 'ASC')->get();
@@ -48,7 +47,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-         $customer = new Customer();
+        $customer = new Customer();
 
         $customer->fname = $request->fname;
         $customer->lname = $request->lname;
@@ -59,10 +58,10 @@ class CustomerController extends Controller
 
         $files = $request->file('uploads');
 
-        $customer->customer_image = 'images/'. $files->getClientOriginalName();
+        $customer->customer_image = 'images/' . $files->getClientOriginalName();
         $customer->save();
 
-        Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
+        Storage::put('public/images/' . $files->getClientOriginalName(), file_get_contents($files));
         return response()->json(["success" => "Customer created successfully.", "customer" => $customer, "status" => 200]);
     }
 
@@ -111,11 +110,11 @@ class CustomerController extends Controller
 
         $files = $request->file('uploads');
 
-        $customer->customer_image = 'images/'. $files->getClientOriginalName();
+        $customer->customer_image = 'images/' . $files->getClientOriginalName();
         // $customer->update();
         $customer->save();
 
-        Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
+        Storage::put('public/images/' . $files->getClientOriginalName(), file_get_contents($files));
         return response()->json(["success" => "Customer updated successfully.", "customer" => $customer, "status" => 200]);
     }
 

@@ -24,7 +24,7 @@ $(document).ready(function () {
             {   data:null,
                 render: function (data, type, row){
                     console.log(data.service_image)
-                    return '<img src="public/images/${data.service_image}" width="50" height="60">';
+                    return `<img src="storage/${data.service_image}" width="70px" height="80px">`;
                 }
             },
             {data: 'cost_price'},
@@ -73,6 +73,78 @@ $("#serviceSubmit").on("click", function (e) {
             console.log(error);
         }
     })
+});
+
+//edit
+$('#stable tbody').on('click', 'a.editBtn', function(e){
+
+    e.preventDefault();
+    $('#serviceModal').modal('show');
+    var id = $(this).data('id');
+
+    $.ajax({
+        type: "GET",
+        url: '/api/services/' + id + '/edit',
+        headers: {'X-CSRF-TOKEN': $('meta [name="csrf-token"]').attr('content') },
+        dataType:"json",
+
+        success:function(data){
+            console.log(data);
+
+            $('#service_id').val(data.id);
+            $('#description').val(data.description);
+            $('#cost_price').val(data.cost_price);
+            $('#sell_price').val(data.sell_price);
+            $('#imagePath').val(data.service_image);
+        },
+
+        error:function(error){
+            console.log(error);
+        },
+    });
+});
+
+//update
+$('#serviceUpdate').on('click', function(e){
+
+    e.preventDefault();
+    var id = $('#service_id').val();
+    var data = $("#sform")[0];
+
+    let formData = new FormData(data);
+    console.log(formData);
+
+    for (var pair of formData.entries()){
+        console.log(pair[0] + "," + pair[1]);
+    }
+
+    var table = $("#stable").DataTable();
+    console.log(id);
+
+    $.ajax({
+
+        type: "POST",
+        url: "/api/services/" + id,
+        data: formData,
+        contentType: false,
+        processData: false,
+        headers: {'X-CSRF-TOKEN': $('meta [name="csrf-token"]').attr('content'), },
+        dataType: "json",
+
+        success: function(data){
+            console.log(data);
+            $("#serviceModal").modal("hide");
+            table.ajax.reload();
+
+            // $('#productModal').modal("hide");
+            // table.row(cRow).data(data).invalidate().draw(false);
+            },
+
+            error: function(error){
+                alert('Error');
+            },
+        });
+
 });
 
 //delete

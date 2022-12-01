@@ -81,7 +81,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::find($id);
         return response()->json($product);
     }
 
@@ -94,8 +94,23 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
-        $product = $product->update($request->all());
+        $product = Product::find($id);
+        $input = $request->all();
+
+        $product->brand = $request->brand;
+        $product->description = $request->description;
+        $product->cost_price = $request->cost_price;
+        $product->sell_price = $request->sell_price;
+
+        $files = $request->file('uploads');
+
+        $product->product_image = 'images/'.$files->getClientOriginalName();
+        Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
+        
+        // $product->update($input);
+        $product->save($input);
+        return response()->json(["success" => "product updated successfully.", "product" => $product, "status" => 200]);
+        // $product = $product->update($request->all());
     }
 
     /**
@@ -108,6 +123,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return response()->json($product);
+        // return response()->json($product);
+        return response()->json(["success" => "Product deleted successfully.", "product" => $product, "status" => 200]);
     }
 }

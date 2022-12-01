@@ -30,7 +30,7 @@ Route::post('/products/store', [ProductController::class, 'store'])->name('produ
 
 //edit
 Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
-Route::put('/products/{id}', [ProductController::class, 'update'])->name('product.update');
+Route::post('/products/{id}', [ProductController::class, 'update'])->name('product.update');
 
 //delete
 Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('product.delete');
@@ -40,6 +40,10 @@ Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('pro
 Route::get('services/all', [ServiceController::class, 'getService'])->name('service.all');
 //post
 Route::post('/services/store', [ServiceController::class, 'store'])->name('service.store');
+
+//edit and update
+Route::get('/services/{id}/edit', [ServiceController::class, 'edit'])->name('service.edit');
+Route::post('/services/{id}', [ServiceController::class, 'update'])->name('service.update');
 
 //delete
 Route::delete('services/{id}', [ServiceController::class, 'destroy'])->name('service.delete');
@@ -59,7 +63,6 @@ Route::delete('customers/{id}', [CustomerController::class, 'destroy'])->name('c
 //edit
 Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
 Route::post('/customers/{id}', [CustomerController::class, 'update'])->name('customer.update');
-
 
 
 

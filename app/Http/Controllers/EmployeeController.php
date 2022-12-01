@@ -20,13 +20,11 @@ class EmployeeController extends Controller
     }
 
 
-     public function getEmployeeAll(Request $request)
+    public function getEmployeeAll(Request $request)
     {
-      
+
         $employees = Employee::orderBy('id', 'ASC')->get();
         return response()->json($employees);
-
-       
     }
 
     /**
@@ -58,12 +56,12 @@ class EmployeeController extends Controller
 
         $files = $request->file('uploads');
 
-        $employee->employees_image = 'images/'. $files->getClientOriginalName();
+        $employee->employees_image = 'images/' . $files->getClientOriginalName();
         $employee->save();
         // $employee->update();
 
 
-        Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
+        Storage::put('public/images/' . $files->getClientOriginalName(), file_get_contents($files));
         return response()->json(["success" => "employee created successfully.", "employee" => $employee, "status" => 200]);
     }
 
@@ -86,7 +84,7 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-         $employee = Employee::find($id);
+        $employee = Employee::find($id);
         return response()->json($employee);
     }
 
@@ -99,7 +97,7 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $employee = Employee::find($id);
+        $employee = Employee::find($id);
 
         $employee->fname = $request->fname;
         $employee->lname = $request->lname;
@@ -110,11 +108,11 @@ class EmployeeController extends Controller
 
         $files = $request->file('uploads');
 
-        $employee->employees_image = 'images/'. $files->getClientOriginalName();
+        $employee->employees_image = 'images/' . $files->getClientOriginalName();
         // $employee->update();
         $employee->save();
 
-        Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
+        Storage::put('public/images/' . $files->getClientOriginalName(), file_get_contents($files));
         return response()->json(["success" => "employee updated successfully.", "employee" => $employee, "status" => 200]);
     }
 
@@ -126,7 +124,7 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-         $employee = Employee::findOrFail($id);
+        $employee = Employee::findOrFail($id);
         $employee->delete();
 
         return response()->json($employee);
